@@ -7,7 +7,25 @@
 		<key>News.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>5</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>C50DBAEC21AFF65300B623DB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C50DBB0021AFF65400B623DB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C50DBB0B21AFF65400B623DB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>
