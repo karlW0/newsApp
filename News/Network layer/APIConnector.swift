@@ -9,6 +9,17 @@
 import Foundation
 import Alamofire
 
+private struct Constants {
+    static let apiKey = "apiKey"
+    static let systemApiKey = "API_KEY"
+    
+    static let everythingPath = "/everything"
+    static let topPath        = "/top-headlines"
+    static let sourcesPath    = "/sources"
+    
+    static let errorString    = "error"
+    static let networkErorr   = "network error"
+}
 
 enum APIResult {
     case success([AnyHashable : Any])
@@ -64,7 +75,7 @@ extension APIConnector: NewsConnectable{
     private func executeRequest( for route: String, with parameters: [String : Any], completion: @escaping (APIResult) -> () ) {
         guard
             let info = Bundle.main.infoDictionary,
-            let key = info["API_KEY"] as? String
+            let key = info[Constants.systemApiKey] as? String
             else{
                 return
         }
@@ -76,11 +87,24 @@ extension APIConnector: NewsConnectable{
                  encoding: URLEncoding.queryString,
                  headers: nil )
             .responseJSON { (response) in
-                if let value = response.result.value as? [AnyHashable : Any]{
-                    completion(.success(value))
-                }else{
-                    completion(.error(Constants.networkErorr))
+                if response.result.isSuccess{
+                    if let value = response.result.value as? [AnyHashable : Any]{
+                        completion(.success(value))
+                    }else{
+                        completion(.error(Constants.networkErorr))
+                    }
+                } else {
+                    if
+                        let data = response.data,
+                        let json = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as? [String : String],
+                        let jsonUnpacked = json,
+                        let reason = jsonUnpacked[Constants.errorString] {
+                        completion(.error(reason))
+                    } else {
+                        completion(.error(Constants.networkErorr))
+                    }
                 }
+                
         }
     }
     
@@ -93,16 +117,6 @@ extension APIConnector: NewsConnectable{
         case .sources:
             return baseURL + Constants.sourcesPath
         }
-    }
-    
-    private struct Constants {
-        static let apiKey = "apiKey"
-        
-        static let everythingPath = "/everything"
-        static let topPath        = "/top-headlines"
-        static let sourcesPath    = "/sources"
-        
-        static let networkErorr   = "network error"
     }
     
 }
