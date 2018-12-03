@@ -12,8 +12,8 @@ import UIKit
 class DetailVC: UIViewController {
     
     fileprivate struct Constants{
-        static let authorPrefix = "link"
-        static let linkIconImageName = "by  "
+        static let authorPrefix = "by  "
+        static let linkIconImageName = "link"
     }
     
     fileprivate var mainView: DetailView { return view as! DetailView }
