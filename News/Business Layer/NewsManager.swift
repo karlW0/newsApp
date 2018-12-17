@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import AlamofireObjectMapper
+import AlamofireImage
 
 class NewsManager{
     
@@ -26,6 +26,8 @@ class NewsManager{
     // shared variable making  the manager a singleton
     public static let shared = NewsManager()
 
+    private init(){}
+    
     fileprivate var apiConnector: APIConnectable?
 
     func configure(with apiConnector: APIConnectable) {
