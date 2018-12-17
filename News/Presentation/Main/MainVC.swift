@@ -64,8 +64,9 @@ extension MainVC : UITableViewDataSource, UITableViewDelegate {
         cell.titleLabel.text = item.title
         
         if let image = item.urlToImage {
-            let url = URL(string: image)!
-            cell.thumbnail.af_setImage(withURL: url)
+            if let url = URL(string: image){
+                cell.thumbnail.af_setImage(withURL: url)
+            }
             // image loading is faulty, to siome empty inageviews that should stay so an image is loaded "randomly"
             // needs to be refactored  
         }
