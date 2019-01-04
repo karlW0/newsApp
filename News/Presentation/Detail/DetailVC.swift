@@ -32,6 +32,7 @@ class DetailVC: UIViewController {
         view = DetailView()
     }
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
      
@@ -41,6 +42,9 @@ class DetailVC: UIViewController {
                                                                    style: .done,
                                                                    target: self,
                                                                    action: #selector(openLink) )
+        
+        mainView.scrollView.isUserInteractionEnabled = true
+        view.translatesAutoresizingMaskIntoConstraints = true
         
         if
             let stringUrl = article.urlToImage,

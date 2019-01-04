@@ -21,11 +21,14 @@ class DetailView : UIView {
     let title : UILabel
     let author : UILabel
     let content : UILabel
+    
+    let scrollView : UIScrollView
 
     init() {
         
         image = UIImageView()
-        image.contentMode = .scaleAspectFit
+        image.contentMode = .scaleAspectFill
+        image.clipsToBounds = true
         
         title = UILabel()
         title.font = Theme.Fonts.title(size: 23)
@@ -42,30 +45,50 @@ class DetailView : UIView {
         content.textColor = Theme.Color.brighterText
         content.numberOfLines = 0
         
-        super.init(frame: CGRect.zero)
+        scrollView = UIScrollView()
 
-        addSubview(image)
-        addSubview(title)
-        addSubview(author)
-        addSubview(content)
+        super.init(frame: CGRect.zero)
+        
+        let imageContainer = UIView()
+        imageContainer.addSubview(image)
+        scrollView.addSubview(imageContainer)
+        scrollView.addSubview(title)
+        scrollView.addSubview(author)
+        scrollView.addSubview(content)
+        
+        addSubview(scrollView)
+        
+        scrollView.snp.makeConstraints { (make) in
+            make.edges.equalTo(self)
+        }
+        
+        imageContainer.snp.makeConstraints { (make) in
+            make.top.equalTo(scrollView)
+            make.right.left.equalTo(self)
+            make.height.equalTo(imageContainer.snp.width).multipliedBy(0.7)
+        }
         
         image.snp.makeConstraints { (make) in
-            make.trailing.top.leading.equalToSuperview()
+            make.left.right.equalTo(imageContainer)
+            make.top.equalTo(self).priority(.high)
+            make.height.greaterThanOrEqualTo(imageContainer.snp.height).priority(.required)
+            make.bottom.equalTo(imageContainer.snp.bottom)
         }
         
         title.snp.makeConstraints { (make) in
             make.top.equalTo(image.snp.bottom)
-            make.trailing.leading.equalToSuperview().inset(Constants.leftRightMargin)
+            make.right.left.equalTo(self).inset(Constants.leftRightMargin)
         }
         
         author.snp.makeConstraints { (make) in
             make.top.equalTo(title.snp.bottom).inset(-5)
-            make.trailing.leading.equalToSuperview().inset(Constants.leftRightMargin)
+            make.right.left.equalTo(self).inset(Constants.leftRightMargin)
         }
         
         content.snp.makeConstraints { (make) in
             make.top.equalTo(author.snp.bottom).inset(-10)
-            make.trailing.leading.equalToSuperview().inset(Constants.leftRightMargin)
+            make.right.left.equalTo(self).inset(Constants.leftRightMargin)
+            make.bottom.equalTo(scrollView)
         }
         
     }
